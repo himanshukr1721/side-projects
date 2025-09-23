@@ -3,27 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Url Shortner</title>
+    <title>URL Shortener</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
-<body class="bg-gray-300 text-gray-800 font-sans p-6">
-    <div class="max-w-2xl mx-auto">
-        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">
-            Python URL Shortner
-        </h1>
-        <form method="POST" class="bg-white shadow-md rounded p-6 mb-6 space-y-4">
-            <label class="block">
-                <span class="text-gray-700">Enter a long URL</span>
-                <input
-                 type="text"
-                 name = "url"
-                 placeholder="https://example.com/verylongurl"
-                 requierd
-                 class="mt-1 block w-full border border-gray-300 rounded p-2"
-                 >
-            </label>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Shorten</button>
-        </form>
+<body class="min-h-screen gradient-bg">
+    <!-- Header -->
+    <div class="text-center py-8">
+        <h1 class="text-4xl font-bold text-white mb-2">URL Shortener</h1>
+        <p class="text-white text-opacity-90">Transform long URLs into short, shareable links</p>
     </div>
+
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto px-6">
+        <!-- URL Shortener Form -->
+        <div class="glass-effect rounded-xl p-8 mb-8 hover-lift">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Shorten Your URL</h2>
+            <form method="POST" class="space-y-4">
+                <label class="block">
+                    <span class="text-gray-700 font-medium">Enter a long URL</span>
+                    <input
+                     type="text"
+                     name="url"
+                     placeholder="https://example.com/verylongurl"
+                     required
+                     class="mt-2 block w-full border border-gray-300 rounded-lg p-4 text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                     >
+                </label>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all">
+                    Shorten URL
+                </button>
+            </form>
+        </div>
+
+        <!-- URLs Table -->
+        <div class="glass-effect rounded-xl p-8 hover-lift">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">All Shortened URLs</h2>
+            {% if all_urls %}
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Short URL</th>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Original URL</th>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Visits</th>
+                            <th class="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        {% for url in all_urls %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="border border-gray-300 px-4 py-3">
+                                    <a href="/{{ url[1] }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                                        http://localhost:5000/{{ url[1] }}
+                                    </a>
+                                </td>
+                                <td class="border border-gray-300 px-4 py-3 text-gray-700">{{ url[0] }}</td>
+                                <td class="border border-gray-300 px-4 py-3">
+                                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-medium">
+                                        {{ url[2] }}
+                                    </span>
+                                </td>
+                                <td class="border border-gray-300 px-4 py-3">
+                                    <form 
+                                    action="/delete/{{ url[1] }}" 
+                                    method="POST"
+                                    onsubmit="return confirm('Delete this short url?')"
+                                    class="inline">
+                                    <button type="submit" class="bg-red-100 hover:bg-red-200 text-red-600 px-3 py-1 rounded font-bold transition-colors">
+                                        Delete
+                                    </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-600 text-lg">No URLs have been shortened yet</p>
+                <p class="text-gray-500 mt-2">Start by entering a URL above!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- How It Works -->
+        <div class="glass-effect rounded-xl p-8 mt-8 hover-lift">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">How It Works</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold text-lg">1</div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Paste URL</h3>
+                    <p class="text-gray-600 text-sm">Enter your long URL in the form above</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold text-lg">2</div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Get Short Link</h3>
+                    <p class="text-gray-600 text-sm">Receive a shortened version instantly</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 font-bold text-lg">3</div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Share & Track</h3>
+                    <p class="text-gray-600 text-sm">Share anywhere and track clicks</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 mt-16">
+        <div class="glass-effect rounded-xl p-6 max-w-2xl mx-auto">
+            <p class="text-gray-700">&copy; 2025 URL Shortener. Simple, fast, and reliable.</p>
+        </div>
+    </footer>
 </body>
 </html>

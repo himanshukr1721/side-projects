@@ -22,7 +22,7 @@ def insert_url(original_url, short_code):
 
 def get_url(short_code):
     with sqlite3.connect(DB_NAME) as conn:
-        cur = conn.execute('SELECT * FROM url WHERE short_code = ?',
+        cur = conn.execute('SELECT * FROM urls WHERE short_code = ?',
         (short_code,))
         return cur.fetchone()
     
@@ -41,4 +41,4 @@ def get_all_url():
     
 def delete_url_by_code(short_code):
     with sqlite3.connect(DB_NAME) as conn:
-        conn.execute('DELETE from urls WHERE short_code = ?', (short_code))
+        conn.execute('DELETE from urls WHERE short_code = ?', (short_code,))
