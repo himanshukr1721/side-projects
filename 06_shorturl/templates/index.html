@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Url Shortner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Welcome to Url shortner</h1>
-    <p>we are working on it</p>
+<body class="bg-gray-300 text-gray-800 font-sans p-6">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-600">
+            Python URL Shortner
+        </h1>
+        <form method="POST" class="bg-white shadow-md rounded p-6 mb-6 space-y-4">
+            <label class="block">
+                <span class="text-gray-700">Enter a long URL</span>
+                <input
+                 type="text"
+                 name = "url"
+                 placeholder="https://example.com/verylongurl"
+                 requierd
+                 class="mt-1 block w-full border border-gray-300 rounded p-2"
+                 >
+            </label>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Shorten</button>
+        </form>
+    </div>
 </body>
 </html>
