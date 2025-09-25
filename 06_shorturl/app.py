@@ -47,7 +47,6 @@ def delete_url(short_code):
     delete_url_by_code(short_code)
     return redirect("/")
 
-
 import os
 
 if __name__ == "__main__":
