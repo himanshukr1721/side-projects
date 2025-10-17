@@ -1,6 +1,7 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
 import random
 import string
+import re
 
 from models import (
     init_db, 
@@ -12,11 +13,16 @@ from models import (
     )
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key-change-this-in-production'
 
 init_db()
 
 def generate_short_code(length=6):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    while True:
+        code = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+        # Check if code already exists
+        if not get_url(code):
+            return code
 
 
 

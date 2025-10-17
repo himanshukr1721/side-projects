@@ -70,19 +70,19 @@
                         {% for url in all_urls %}
                             <tr class="hover:bg-gray-50">
                                 <td class="border border-gray-300 px-4 py-3">
-                                    <a href="/{{ urls[1] }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
+                                    <a href="/{{ url[1] }}" target="_blank" class="text-blue-600 underline hover:text-blue-800">
                                         http://localhost:5000/{{ url[1] }}
                                     </a>
                                 </td>
-                                <td class="border border-gray-300 px-4 py-3 text-gray-700">{{ urls[0] }}</td>
+                                <td class="border border-gray-300 px-4 py-3 text-gray-700">{{ url[0] }}</td>
                                 <td class="border border-gray-300 px-4 py-3">
                                     <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-medium">
-                                        {{ urls[2] }}
+                                        {{ url[2] }}
                                     </span>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-3">
                                     <form 
-                                    action="/delete/{{ urls[1] }}" 
+                                    action="/delete/{{ url[1] }}" 
                                     method="POST"
                                     onsubmit="return confirm('Delete this short url?')"
                                     class="inline">
