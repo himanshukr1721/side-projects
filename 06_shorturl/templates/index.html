@@ -32,6 +32,17 @@
 
     <!-- Main Container -->
     <div class="max-w-4xl mx-auto px-6">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700 border border-red-300{% else %}bg-green-100 text-green-700 border border-green-300{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
         <!-- URL Shortener Form -->
         <div class="glass-effect rounded-xl p-8 mb-8 hover-lift">
             <h2 class="text-2xl font-bold mb-6 text-gray-800">Shorten Your URL</h2>

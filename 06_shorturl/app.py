@@ -17,6 +17,17 @@ app.secret_key = 'your-secret-key-change-this-in-production'
 
 init_db()
 
+def is_valid_url(url):
+    """Check if the URL is valid"""
+    pattern = re.compile(
+        r'^https?://'  # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
+        r'(?::\d+)?'  # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    return pattern.match(url) is not None
+
 def generate_short_code(length=6):
     while True:
         code = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -27,12 +38,30 @@ def generate_short_code(length=6):
 
 
 @app.route("/", methods=['GET', 'POST'])
-
 def index():
     if request.method == 'POST':
-        original_url = request.form['urls']
-        short_code = generate_short_code()
-        insert_url(original_url, short_code)
+        original_url = request.form['urls'].strip()
+        
+        # Validate URL
+        if not original_url:
+            flash('Please enter a URL', 'error')
+            return redirect("/")
+        
+        # Add https:// if no protocol specified
+        if not original_url.startswith(('http://', 'https://')):
+            original_url = 'https://' + original_url
+        
+        if not is_valid_url(original_url):
+            flash('Please enter a valid URL', 'error')
+            return redirect("/")
+        
+        try:
+            short_code = generate_short_code()
+            insert_url(original_url, short_code)
+            flash(f'URL shortened successfully! Short code: {short_code}', 'success')
+        except Exception as e:
+            flash('Error creating short URL. Please try again.', 'error')
+        
         return redirect("/")
     
     all_urls = get_all_url()
