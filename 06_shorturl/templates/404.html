@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>404 - URL Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Courier New', monospace;
+        }
+        .brutal-border {
+            border: 6px solid #000;
+            box-shadow: 8px 8px 0px #000;
+        }
+        .brutal-button {
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.1s;
+        }
+        .brutal-button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+        .brutal-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px #000;
+        }
+    </style>
 </head>
-<body>
-    <h1>Page NOt found - Fuck off</h1>
+<body class="min-h-screen bg-red-500 flex items-center justify-center px-6">
+    <div class="text-center">
+        <div class="bg-white brutal-border p-12 max-w-2xl mx-auto">
+            <h1 class="text-8xl font-black text-black mb-6">404</h1>
+            <h2 class="text-4xl font-black text-black mb-6 uppercase">PAGE NOT FOUND</h2>
+            <p class="text-black font-bold text-xl mb-8">THE URL YOU'RE LOOKING FOR DOESN'T EXIST</p>
+            <a href="/" class="bg-black text-white px-8 py-4 brutal-button font-black text-xl uppercase inline-block">
+                GO HOME
+            </a>
+        </div>
+    </div>
 </body>
 </html>
